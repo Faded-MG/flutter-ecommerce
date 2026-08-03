@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatelessWidget {
+import 'providers/auth_provider.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +24,8 @@ class LoginScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-
             TextField(
+              controller: usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
               ),
@@ -23,6 +34,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             TextField(
+              controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password',
@@ -32,10 +44,16 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                await ref
+                    .read(authRepositoryProvider)
+                    .login(
+                      usernameController.text,
+                      passwordController.text,
+                    );
+              },
               child: const Text('Login'),
             ),
-
           ],
         ),
       ),
