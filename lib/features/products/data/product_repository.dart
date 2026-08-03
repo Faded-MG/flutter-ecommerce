@@ -9,6 +9,16 @@ class ProductRepository {
   });
 
   Future<List<Product>> getProducts() async {
-    return await productApi.getProducts();
+    return productApi.getProducts();
+  }
+
+  Future<List<String>> getCategories() async {
+    return productApi.getCategories();
+  }
+
+  Future<List<Product>> getProductsByCategory(
+    String category,
+  ) async {
+    return productApi.getProductsByCategory(category);
   }
 }

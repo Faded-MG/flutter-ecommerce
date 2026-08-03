@@ -14,32 +14,83 @@ class ProductScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Products"),
       ),
-      body: products.when(
-        data: (products) {
+      body: Column(
+  children: [
+    SizedBox(
+      height: 60,
+      child: ref.watch(categoriesProvider).when(
+        data: (categories) {
           return ListView.builder(
-            itemCount: products.length,
+            scrollDirection: Axis.horizontal,
+            itemCount: categories.length + 1,
             itemBuilder: (context, index) {
-              final product = products[index];
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ElevatedButton(
+  onPressed: () {
+    ref
+        .read(selectedCategoryProvider.notifier)
+        .selectCategory(null);
+  },
+  child: const Text("All"),
+)
+                );
+              }
 
-              return ProductCard(product: product);
+              final category = categories[index - 1];
+
+              return Padding(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+  onPressed: () {
+    ref
+        .read(selectedCategoryProvider.notifier)
+        .selectCategory(category);
+  },
+  child: Text(category),
+)
+              );
             },
           );
         },
-
         loading: () {
           return const Center(
             child: CircularProgressIndicator(),
           );
         },
+        error: (error, stackTrace) {
+          return Text(error.toString());
+        },
+      ),
+    ),
 
+    Expanded(
+      child: products.when(
+        data: (products) {
+          return ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                product: products[index],
+              );
+            },
+          );
+        },
+        loading: () {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
         error: (error, stackTrace) {
           return Center(
-            child: Text(
-              error.toString(),
-            ),
+            child: Text(error.toString()),
           );
         },
       ),
+    ),
+  ],
+),
     );
   }
 }

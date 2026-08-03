@@ -17,4 +17,24 @@ class ProductApi {
         .map((json) => Product.fromJson(json))
         .toList();
   }
+
+  Future<List<String>> getCategories() async {
+    final response = await apiClient.dio.get('/products/categories');
+
+    return List<String>.from(response.data);
+  }
+
+  Future<List<Product>> getProductsByCategory(
+    String category,
+  ) async {
+    final response = await apiClient.dio.get(
+      '/products/category/$category',
+    );
+
+    final List<dynamic> data = response.data;
+
+    return data
+        .map((json) => Product.fromJson(json))
+        .toList();
+  }
 }
