@@ -10,20 +10,21 @@ class AuthRepository {
     required this.storage,
   });
 
-  Future<void> login(
-    String username,
-    String password,
-  ) async {
-    final response = await apiClient.dio.post(
-      '/auth/login',
-      data: {
-        'username': username,
-        'password': password,
-      },
-    );
+  Future<void> login(String username, String password) async {
+    try {
+      final response = await apiClient.dio.post(
+        '/auth/login',
+        data: {
+          'username': username,
+          'password': password,
+        },
+      );
 
-    final token = response.data['token'];
+      final token = response.data['token'];
 
-    await storage.saveToken(token);
+      await storage.saveToken(token);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
