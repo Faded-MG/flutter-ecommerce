@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'widgets/product_card.dart';
 import 'providers/product_provider.dart';
+import '../../cart/presentation/cart_screen.dart';
 
 class ProductScreen extends ConsumerWidget {
   const ProductScreen({super.key});
@@ -11,9 +13,23 @@ class ProductScreen extends ConsumerWidget {
     final products = ref.watch(productsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Products"),
-      ),
+     appBar: AppBar(
+  title: const Text("Products"),
+
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.shopping_cart),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CartScreen(),
+          ),
+        );
+      },
+    ),
+  ],
+),
       body: Column(
         
   children: [

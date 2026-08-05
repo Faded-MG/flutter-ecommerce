@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/product.dart';
+import '../../cart/presentation/providers/cart_provider.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends ConsumerWidget {
   final Product product;
 
   const ProductDetailsScreen({
@@ -11,7 +13,7 @@ class ProductDetailsScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.title),
@@ -71,6 +73,28 @@ class ProductDetailsScreen extends StatelessWidget {
               product.description,
               style: const TextStyle(
                 fontSize: 16,
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  ref
+                      .read(cartProvider.notifier)
+                      .addToCart(product);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Added to cart"),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Add to Cart",
+                ),
               ),
             ),
           ],
