@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'features/products/presentation/product_screen.dart';
+import 'features/home/presentation/home_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
-      home: const ProductScreen(),
+      home: const HomeScreen(),
     );
   }
 }

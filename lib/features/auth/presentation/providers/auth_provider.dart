@@ -44,3 +44,29 @@ final authLoadingProvider =
     NotifierProvider<AuthLoadingNotifier, bool>(
   AuthLoadingNotifier.new,
 );
+class AuthStateNotifier extends AsyncNotifier<bool> {
+
+  @override
+  Future<bool> build() async {
+    final storage = ref.read(localStorageProvider);
+
+    final token = await storage.getToken();
+
+    return token != null;
+  }
+
+
+  Future<void> logout() async {
+    final storage = ref.read(localStorageProvider);
+
+    await storage.removeToken();
+
+    state = const AsyncData(false);
+  }
+}
+
+
+final authStateProvider =
+    AsyncNotifierProvider<AuthStateNotifier, bool>(
+  AuthStateNotifier.new,
+);

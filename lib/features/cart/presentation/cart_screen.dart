@@ -8,7 +8,7 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartItems = ref.watch(cartProvider);
+    final cartState = ref.watch(cartProvider);
     final cartNotifier = ref.read(cartProvider.notifier);
 
     return Scaffold(
@@ -16,163 +16,185 @@ class CartScreen extends ConsumerWidget {
         title: const Text("Cart"),
       ),
 
-      body: cartItems.isEmpty
-          ? const Center(
+      body: cartState.when(
+        loading: () {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+
+        error: (error, stackTrace) {
+          return Center(
+            child: Text(
+              error.toString(),
+            ),
+          );
+        },
+
+        data: (cartItems) {
+          if (cartItems.isEmpty) {
+            return const Center(
               child: Text(
                 "Your cart is empty",
                 style: TextStyle(
                   fontSize: 18,
                 ),
               ),
-            )
+            );
+          }
 
-          : Column(
-              children: [
+          return Column(
+            children: [
 
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: cartItems.length,
-                    itemBuilder: (context, index) {
-                      final item = cartItems[index];
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cartItems.length,
 
-                      return Card(
-                        margin: const EdgeInsets.all(10),
+                  itemBuilder: (context, index) {
+                    final item = cartItems[index];
 
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
+                    return Card(
+                      margin: const EdgeInsets.all(10),
 
-                          child: Row(
-                            children: [
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
 
-                              Image.network(
-                                item.image,
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.contain,
-                              ),
+                        child: Row(
+                          children: [
 
-                              const SizedBox(width: 12),
+                            Image.network(
+                              item.image,
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.contain,
+                            ),
 
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                            const SizedBox(width: 12),
 
-                                  children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
 
-                                    Text(
-                                      item.title,
-                                      maxLines: 2,
-                                      overflow:
-                                          TextOverflow.ellipsis,
+                                children: [
 
-                                      style: const TextStyle(
-                                        fontWeight:
-                                            FontWeight.bold,
+                                  Text(
+                                    item.title,
+                                    maxLines: 2,
+                                    overflow:
+                                        TextOverflow.ellipsis,
+
+                                    style: const TextStyle(
+                                      fontWeight:
+                                          FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 8),
+
+                                  Text(
+                                    "\$${item.price}",
+                                  ),
+
+                                  Row(
+                                    children: [
+
+                                      IconButton(
+                                        onPressed: () {
+                                          cartNotifier
+                                              .decreaseQuantity(
+                                            item.id,
+                                          );
+                                        },
+
+                                        icon: const Icon(
+                                          Icons.remove,
+                                        ),
                                       ),
-                                    ),
 
-                                    const SizedBox(height: 8),
 
-                                    Text(
-                                      "\$${item.price}",
-                                    ),
+                                      Text(
+                                        "${item.quantity}",
+                                      ),
 
-                                    Row(
-                                      children: [
 
-                                        IconButton(
-                                          onPressed: () {
-                                            cartNotifier
-                                                .decreaseQuantity(
-                                              item.id,
-                                            );
-                                          },
+                                      IconButton(
+                                        onPressed: () {
+                                          cartNotifier
+                                              .increaseQuantity(
+                                            item.id,
+                                          );
+                                        },
 
-                                          icon: const Icon(
-                                            Icons.remove,
-                                          ),
+                                        icon: const Icon(
+                                          Icons.add,
                                         ),
+                                      ),
 
 
-                                        Text(
-                                          "${item.quantity}",
+                                      IconButton(
+                                        onPressed: () {
+                                          cartNotifier
+                                              .removeFromCart(
+                                            item.id,
+                                          );
+                                        },
+
+                                        icon: const Icon(
+                                          Icons.delete,
                                         ),
+                                      ),
 
-
-                                        IconButton(
-                                          onPressed: () {
-                                            cartNotifier
-                                                .increaseQuantity(
-                                              item.id,
-                                            );
-                                          },
-
-                                          icon: const Icon(
-                                            Icons.add,
-                                          ),
-                                        ),
-
-
-                                        IconButton(
-                                          onPressed: () {
-                                            cartNotifier
-                                                .removeFromCart(
-                                              item.id,
-                                            );
-                                          },
-
-                                          icon: const Icon(
-                                            Icons.delete,
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-
-                Padding(
-                  padding: const EdgeInsets.all(16),
-
-                  child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-
-                    children: [
-
-                      const Text(
-                        "Total:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight:
-                              FontWeight.bold,
+                            ),
+                          ],
                         ),
                       ),
-
-                      Text(
-                        "\$${cartNotifier.totalPrice.toStringAsFixed(2)}",
-
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+
+
+              Padding(
+                padding: const EdgeInsets.all(16),
+
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+
+                  children: [
+
+                    const Text(
+                      "Total:",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
+
+
+                    Text(
+                      "\$${cartNotifier.totalPrice.toStringAsFixed(2)}",
+
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
