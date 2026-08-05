@@ -15,7 +15,24 @@ class ProductScreen extends ConsumerWidget {
         title: const Text("Products"),
       ),
       body: Column(
+        
   children: [
+    TextField(
+  decoration: InputDecoration(
+    hintText: "Search products...",
+    prefixIcon: const Icon(Icons.search),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+  ),
+  onChanged: (value) {
+    ref
+        .read(searchQueryProvider.notifier)
+        .search(value);
+  },
+),
+
+const SizedBox(height: 12),
     SizedBox(
       height: 60,
       child: ref.watch(categoriesProvider).when(
