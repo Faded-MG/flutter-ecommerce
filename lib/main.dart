@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'features/home/presentation/home_screen.dart';
+import 'features/auth/presentation/auth_gate.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
-      home: const HomeScreen(),
+      home: const AuthGate(),
     );
   }
 }
