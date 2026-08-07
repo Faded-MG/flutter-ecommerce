@@ -19,7 +19,22 @@ class LocalStorage {
       'token',
     );
   }
+Future<void> saveUserId(int id) async {
+  final prefs = await SharedPreferences.getInstance();
 
+  await prefs.setInt(
+    'userId',
+    id,
+  );
+}
+
+Future<int?> getUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  return prefs.getInt(
+    'userId',
+  );
+}
 
   Future<void> removeToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -38,4 +53,21 @@ Future<void> saveToken(String token) async {
   );
 
   print("TOKEN SAVED: $token");
+}
+Future<void> saveUserId(int id) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  await prefs.setInt(
+    'userId',
+    id,
+  );
+}
+
+
+Future<int?> getUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  return prefs.getInt(
+    'userId',
+  );
 }
