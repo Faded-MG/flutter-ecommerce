@@ -29,3 +29,13 @@ class LocalStorage {
     );
   }
 }
+Future<void> saveToken(String token) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  await prefs.setString(
+    'token',
+    token,
+  );
+
+  print("TOKEN SAVED: $token");
+}
