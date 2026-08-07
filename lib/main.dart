@@ -17,5 +17,6 @@ class MyApp extends StatelessWidget {
       title: 'E-Commerce App',
       home: const HomeScreen(),
     );
-  }
+  
 }
+
