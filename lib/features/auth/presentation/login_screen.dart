@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/auth_provider.dart';
+import '../../home/presentation/home_screen.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -42,18 +44,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
 
             const SizedBox(height: 24),
+ElevatedButton(
+  onPressed: () async {
+    try {
+      await ref
+          .read(authRepositoryProvider)
+          .login(
+            usernameController.text.trim(),
+            passwordController.text,
+          );
 
-            ElevatedButton(
-              onPressed: () async {
-                await ref
-                    .read(authRepositoryProvider)
-                    .login(
-                      usernameController.text,
-                      passwordController.text,
-                    );
-              },
-              child: const Text('Login'),
-            ),
+      if (!context.mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HomeScreen(),
+        ),
+      );
+
+    } catch (e) {
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Login failed: $e",
+          ),
+        ),
+      );
+
+    }
+  },
+  child: const Text("Login"),
+)
           ],
         ),
       ),
