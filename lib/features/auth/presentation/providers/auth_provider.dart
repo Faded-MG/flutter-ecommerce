@@ -3,19 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/storage/local_storage.dart';
 import '../../data/auth_repository.dart';
-
+import '../../model/user_model.dart';
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   return ApiClient();
 });
 
-
 final localStorageProvider = Provider<LocalStorage>((ref) {
-  final storage = LocalStorage();
-
-  return storage;
+  return LocalStorage();
 });
-
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(
@@ -23,7 +19,6 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
     storage: ref.watch(localStorageProvider),
   );
 });
-
 
 class AuthLoadingNotifier extends Notifier<bool> {
   @override
@@ -44,8 +39,8 @@ final authLoadingProvider =
     NotifierProvider<AuthLoadingNotifier, bool>(
   AuthLoadingNotifier.new,
 );
-class AuthStateNotifier extends AsyncNotifier<bool> {
 
+class AuthStateNotifier extends AsyncNotifier<bool> {
   @override
   Future<bool> build() async {
     final storage = ref.read(localStorageProvider);
@@ -54,7 +49,6 @@ class AuthStateNotifier extends AsyncNotifier<bool> {
 
     return token != null;
   }
-
 
   Future<void> logout() async {
     final storage = ref.read(localStorageProvider);
@@ -65,8 +59,20 @@ class AuthStateNotifier extends AsyncNotifier<bool> {
   }
 }
 
-
 final authStateProvider =
     AsyncNotifierProvider<AuthStateNotifier, bool>(
   AuthStateNotifier.new,
 );
+
+final userProfileProvider = FutureProvider<UserModel?>((ref) async {
+  final storage = ref.read(localStorageProvider);
+  final repository = ref.read(authRepositoryProvider);
+
+  final userId = await storage.getUserId();
+
+  if (userId == null) {
+    return null;
+  }
+
+  return repository.getUser(userId);
+});
