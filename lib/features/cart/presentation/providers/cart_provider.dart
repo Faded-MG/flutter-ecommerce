@@ -7,6 +7,7 @@ import '../../model/cart_item.dart';
 import '../../../products/model/product.dart';
 
 class CartNotifier extends AsyncNotifier<List<CartItem>> {
+  
   static const String cartKey = 'cart_items';
 
   @override
@@ -14,6 +15,7 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
     final prefs = await SharedPreferences.getInstance();
 
     final savedCart = prefs.getString(cartKey);
+    print("SAVED CART: $savedCart");
 
     if (savedCart == null) {
       return [];
@@ -38,6 +40,7 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
       cartKey,
       encoded,
     );
+    print("CART SAVED: $encoded");
   }
 
 
