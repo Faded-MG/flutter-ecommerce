@@ -23,14 +23,14 @@ class Product {
     final ratingJson = json['rating'] as Map<String, dynamic>?;
 
     return Product(
-      id: json['id'],
-      title: json['title'],
-      price: (json['price'] as num).toDouble(),
-      description: json['description'],
-      category: json['category'],
-      image: json['image'],
-      rating: ratingJson != null ? (ratingJson['rate'] as num).toDouble() : 0.0,
-      ratingCount: ratingJson != null ? (ratingJson['count'] as num).toInt() : 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      title: json['title'] as String? ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      description: json['description'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+      image: json['image'] as String? ?? '',
+      rating: (ratingJson?['rate'] as num?)?.toDouble() ?? 0.0,
+      ratingCount: (ratingJson?['count'] as num?)?.toInt() ?? 0,
     );
   }
 
