@@ -97,14 +97,47 @@ class ProductCard extends ConsumerWidget {
               ),
 
               IconButton(
-                icon: Icon(
-                  isWishlisted ? Icons.favorite : Icons.favorite_border,
-                  color: isWishlisted ? Colors.red : Colors.grey,
-                ),
-                onPressed: () {
-                  ref.read(wishlistProvider.notifier).toggleWishlist(product);
-                },
+  icon: Icon(
+    isWishlisted ? Icons.favorite : Icons.favorite_border,
+    color: isWishlisted ? Colors.red : Colors.grey,
+  ),
+  onPressed: () {
+    final wasWishlisted = isWishlisted;
+
+    ref.read(wishlistProvider.notifier).toggleWishlist(product);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: wasWishlisted
+            ? Colors.grey.shade700
+            : const Color.fromARGB(255, 79, 112, 80),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        content: Row(
+          children: [
+            Icon(
+              wasWishlisted ? Icons.favorite_border : Icons.favorite,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              wasWishlisted ? "Removed from wishlist" : "Added to wishlist",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
               ),
+            ),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  },
+),
             ],
           ),
         ),
