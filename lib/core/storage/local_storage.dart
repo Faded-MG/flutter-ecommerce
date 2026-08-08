@@ -52,7 +52,7 @@ Future<void> saveToken(String token) async {
     token,
   );
 
-  print("TOKEN SAVED: $token");
+
 }
 Future<void> saveUserId(int id) async {
   final prefs = await SharedPreferences.getInstance();

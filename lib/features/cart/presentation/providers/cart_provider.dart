@@ -15,7 +15,7 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
     final prefs = await SharedPreferences.getInstance();
 
     final savedCart = prefs.getString(cartKey);
-    print("SAVED CART: $savedCart");
+   
 
     if (savedCart == null) {
       return [];
@@ -40,7 +40,7 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
       cartKey,
       encoded,
     );
-    print("CART SAVED: $encoded");
+   
   }
 
 

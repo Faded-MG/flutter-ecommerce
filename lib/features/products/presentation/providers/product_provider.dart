@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/network/api_client.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/product_api.dart';
 import '../../data/product_repository.dart';
 import '../../model/product.dart';
@@ -8,7 +8,7 @@ import '../../model/product.dart';
 
 final productApiProvider = Provider<ProductApi>((ref) {
   return ProductApi(
-    apiClient: ApiClient(),
+    apiClient: ref.read(apiClientProvider),
   );
 });
 
@@ -94,13 +94,4 @@ final categoriesProvider = FutureProvider<List<String>>((ref) async {
   final repository = ref.read(productRepositoryProvider);
 
   return repository.getCategories();
-});
-
-
-// Products by category (kept for future use)
-final categoryProductsProvider =
-    FutureProvider.family<List<Product>, String>((ref, category) async {
-  final repository = ref.read(productRepositoryProvider);
-
-  return repository.getProductsByCategory(category);
 });

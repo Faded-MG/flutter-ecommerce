@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/cart_provider.dart';
-
+import 'package:ecommerce_app/shared/widgets/empty_state.dart';
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
@@ -34,15 +34,12 @@ class CartScreen extends ConsumerWidget {
 
         data: (cartItems) {
           if (cartItems.isEmpty) {
-            return const Center(
-              child: Text(
-                "Your cart is empty",
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-            );
-          }
+  return const EmptyState(
+    icon: Icons.shopping_cart_outlined,
+    message: 'Your cart is empty',
+    subMessage: 'Add some products to get started',
+  );
+}
 
           return Column(
             children: [

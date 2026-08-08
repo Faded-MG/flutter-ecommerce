@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/product.dart';
 import '../product_details_screen.dart';
+import '../../../wishlist/presentation/providers/wishlist_provider.dart';
 
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Product product;
 
   const ProductCard({
@@ -13,7 +15,12 @@ class ProductCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final wishlistAsync = ref.watch(wishlistProvider);
+    final isWishlisted = wishlistAsync.value
+            ?.any((item) => item.id == product.id) ??
+        false;
+
     return Card(
       margin: const EdgeInsets.symmetric(
         horizontal: 12,
@@ -82,6 +89,16 @@ class ProductCard extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+
+              IconButton(
+                icon: Icon(
+                  isWishlisted ? Icons.favorite : Icons.favorite_border,
+                  color: isWishlisted ? Colors.red : Colors.grey,
+                ),
+                onPressed: () {
+                  ref.read(wishlistProvider.notifier).toggleWishlist(product);
+                },
               ),
             ],
           ),
