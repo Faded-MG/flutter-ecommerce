@@ -32,9 +32,11 @@ class ProfileScreen extends ConsumerWidget {
             }
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
 
               children: [
+                const SizedBox(height: 20),
+
                 const CircleAvatar(
                   radius: 40,
                   child: Icon(Icons.person, size: 40),
@@ -44,6 +46,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 Text(
                   "${user.firstname} ${user.lastname}",
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -52,20 +55,33 @@ class ProfileScreen extends ConsumerWidget {
 
                 const SizedBox(height: 10),
 
-                Text("@${user.username}", style: const TextStyle(fontSize: 16)),
+                Text(
+                  "@${user.username}",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16),
+                ),
 
                 const SizedBox(height: 10),
 
-                Text(user.email, style: const TextStyle(fontSize: 16)),
+                Text(
+                  user.email,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16),
+                ),
 
                 const SizedBox(height: 10),
 
-                Text(user.phone, style: const TextStyle(fontSize: 16)),
+                Text(
+                  user.phone,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16),
+                ),
 
                 const SizedBox(height: 10),
 
                 Text(
                   "${user.street}, ${user.city}",
+                  textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 16),
                 ),
 

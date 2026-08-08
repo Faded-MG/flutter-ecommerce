@@ -80,12 +80,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           message = "Login failed. Please try again.";
                         }
 
+                        ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(
                           context,
                         ).showSnackBar(SnackBar(content: Text(message)));
                       } catch (e) {
                         if (!context.mounted) return;
 
+                        ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
