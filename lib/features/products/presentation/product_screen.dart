@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/product_card.dart';
 import 'providers/product_provider.dart';
 import '../../cart/presentation/cart_screen.dart';
+import '../../wishlist/presentation/wishlist_screen.dart';
+import 'package:ecommerce_app/shared/widgets/empty_state.dart';
 
 class ProductScreen extends ConsumerWidget {
   const ProductScreen({super.key});
@@ -17,6 +19,17 @@ class ProductScreen extends ConsumerWidget {
   title: const Text("Products"),
 
   actions: [
+    IconButton(
+      icon: const Icon(Icons.favorite_border),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WishlistScreen(),
+          ),
+        );
+      },
+    ),
     IconButton(
       icon: const Icon(Icons.shopping_cart),
       onPressed: () {
@@ -100,16 +113,27 @@ const SizedBox(height: 12),
 
     Expanded(
       child: products.when(
-        data: (products) {
-          return ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return ProductCard(
-                product: products[index],
-              );
-            },
-          );
-        },
+       data: (products) {
+  if (products.isEmpty) {
+    final query = ref.watch(searchQueryProvider);
+    final hasSearch = query.trim().isNotEmpty;
+
+    return EmptyState(
+      icon: hasSearch ? Icons.search_off : Icons.inventory_2_outlined,
+      message: hasSearch
+          ? 'No products match "$query"'
+          : 'No products found',
+      subMessage: hasSearch
+          ? 'Try a different search term'
+          : 'Try a different category',
+    );
+  }
+
+  return ListView.builder(
+    itemCount: products.length,
+    itemBuilder: (context, index) => ProductCard(product: products[index]),
+  );
+},
         loading: () {
           return const Center(
             child: CircularProgressIndicator(),
