@@ -45,26 +45,15 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: AppColors.ink,
         ),
-        bodyLarge: GoogleFonts.inter(
-          fontSize: 15,
-          color: AppColors.ink,
-        ),
-        bodyMedium: GoogleFonts.inter(
-          fontSize: 13,
-          color: AppColors.ink,
-        ),
-        bodySmall: GoogleFonts.inter(
-          fontSize: 12,
-          color: AppColors.muted,
-        ),
+        bodyLarge: GoogleFonts.inter(fontSize: 15, color: AppColors.ink),
+        bodyMedium: GoogleFonts.inter(fontSize: 13, color: AppColors.ink),
+        bodySmall: GoogleFonts.inter(fontSize: 12, color: AppColors.muted),
       ),
 
       cardTheme: CardThemeData(
         color: AppColors.cardWhite,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -75,9 +64,7 @@ class AppTheme {
             fontWeight: FontWeight.w600,
             fontSize: 14,
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
       ),

@@ -21,18 +21,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = ref.watch(authLoadingProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               controller: usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-              ),
+              decoration: const InputDecoration(labelText: 'Username'),
             ),
 
             const SizedBox(height: 16),
@@ -40,9 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
+              decoration: const InputDecoration(labelText: 'Password'),
             ),
 
             const SizedBox(height: 24),
@@ -65,9 +59,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomeScreen(),
-                          ),
+                          MaterialPageRoute(builder: (_) => const HomeScreen()),
                         );
                       } on DioException catch (e) {
                         if (!context.mounted) return;
@@ -76,27 +68,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                         if (e.response?.statusCode == 401) {
                           message = "Invalid username or password.";
-                        } else if (e.type == DioExceptionType.connectionTimeout) {
+                        } else if (e.type ==
+                            DioExceptionType.connectionTimeout) {
                           message = "Connection timed out. Please try again.";
                         } else if (e.type == DioExceptionType.receiveTimeout) {
-                          message = "Server took too long to respond. Please try again.";
+                          message =
+                              "Server took too long to respond. Please try again.";
                         } else if (e.type == DioExceptionType.connectionError) {
                           message = "Unable to connect to the server.";
                         } else {
                           message = "Login failed. Please try again.";
                         }
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(message),
-                          ),
-                        );
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(message)));
                       } catch (e) {
                         if (!context.mounted) return;
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Something went wrong. Please try again."),
+                            content: Text(
+                              "Something went wrong. Please try again.",
+                            ),
                           ),
                         );
                       } finally {

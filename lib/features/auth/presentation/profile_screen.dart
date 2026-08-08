@@ -12,48 +12,32 @@ class ProfileScreen extends ConsumerWidget {
     final userState = ref.watch(userProfileProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-      ),
+      appBar: AppBar(title: const Text("Profile")),
 
       body: Padding(
         padding: const EdgeInsets.all(20),
 
         child: userState.when(
           loading: () {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           },
 
           error: (error, stackTrace) {
-            return Center(
-              child: Text(
-                "Failed to load profile: $error",
-              ),
-            );
+            return Center(child: Text("Failed to load profile: $error"));
           },
 
           data: (user) {
             if (user == null) {
-              return const Center(
-                child: Text(
-                  "No user information found.",
-                ),
-              );
+              return const Center(child: Text("No user information found."));
             }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-
                 const CircleAvatar(
                   radius: 40,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                  ),
+                  child: Icon(Icons.person, size: 40),
                 ),
 
                 const SizedBox(height: 20),
@@ -68,38 +52,21 @@ class ProfileScreen extends ConsumerWidget {
 
                 const SizedBox(height: 10),
 
-                Text(
-                  "@${user.username}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                Text("@${user.username}", style: const TextStyle(fontSize: 16)),
 
                 const SizedBox(height: 10),
 
-                Text(
-                  user.email,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                Text(user.email, style: const TextStyle(fontSize: 16)),
 
                 const SizedBox(height: 10),
 
-                Text(
-                  user.phone,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                Text(user.phone, style: const TextStyle(fontSize: 16)),
 
                 const SizedBox(height: 10),
 
                 Text(
                   "${user.street}, ${user.city}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(fontSize: 16),
                 ),
 
                 const Spacer(),
@@ -109,17 +76,13 @@ class ProfileScreen extends ConsumerWidget {
 
                   child: ElevatedButton(
                     onPressed: () async {
-                      await ref
-                          .read(authStateProvider.notifier)
-                          .logout();
+                      await ref.read(authStateProvider.notifier).logout();
 
                       if (!context.mounted) return;
 
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const LoginScreen(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
                         (route) => false,
                       );
                     },

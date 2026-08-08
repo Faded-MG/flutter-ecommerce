@@ -5,35 +5,26 @@ import '../../model/product.dart';
 import '../product_details_screen.dart';
 import '../../../wishlist/presentation/providers/wishlist_provider.dart';
 
-
 class ProductCard extends ConsumerWidget {
   final Product product;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-  });
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final wishlistAsync = ref.watch(wishlistProvider);
-    final isWishlisted = wishlistAsync.value
-            ?.any((item) => item.id == product.id) ??
-        false;
+    final isWishlisted =
+        wishlistAsync.value?.any((item) => item.id == product.id) ?? false;
 
     return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 8,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  ProductDetailsScreen(product: product),
+              builder: (context) => ProductDetailsScreen(product: product),
             ),
           );
         },
@@ -47,10 +38,7 @@ class ProductCard extends ConsumerWidget {
                 height: 80,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
-                    Icons.image_not_supported,
-                    size: 50,
-                  );
+                  return const Icon(Icons.image_not_supported, size: 50);
                 },
               ),
 
@@ -64,18 +52,14 @@ class ProductCard extends ConsumerWidget {
                       product.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
 
                     const SizedBox(height: 8),
 
                     Text(
                       product.category,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                      ),
+                      style: TextStyle(color: Colors.grey.shade600),
                     ),
 
                     const SizedBox(height: 8),

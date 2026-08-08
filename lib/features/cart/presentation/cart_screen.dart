@@ -13,37 +13,28 @@ class CartScreen extends ConsumerWidget {
     final cartNotifier = ref.read(cartProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cart"),
-      ),
+      appBar: AppBar(title: const Text("Cart")),
 
       body: cartState.when(
         loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         },
 
         error: (error, stackTrace) {
-          return Center(
-            child: Text(
-              error.toString(),
-            ),
-          );
+          return Center(child: Text(error.toString()));
         },
 
         data: (cartItems) {
           if (cartItems.isEmpty) {
-  return const EmptyState(
-    icon: Icons.shopping_cart_outlined,
-    message: 'Your cart is empty',
-    subMessage: 'Add some products to get started',
-  );
-}
+            return const EmptyState(
+              icon: Icons.shopping_cart_outlined,
+              message: 'Your cart is empty',
+              subMessage: 'Add some products to get started',
+            );
+          }
 
           return Column(
             children: [
-
               Expanded(
                 child: ListView.builder(
                   itemCount: cartItems.length,
@@ -59,7 +50,6 @@ class CartScreen extends ConsumerWidget {
 
                         child: Row(
                           children: [
-
                             Image.network(
                               item.image,
                               width: 70,
@@ -71,78 +61,54 @@ class CartScreen extends ConsumerWidget {
 
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
 
                                 children: [
-
                                   Text(
                                     item.title,
                                     maxLines: 2,
-                                    overflow:
-                                        TextOverflow.ellipsis,
+                                    overflow: TextOverflow.ellipsis,
 
                                     style: const TextStyle(
-                                      fontWeight:
-                                          FontWeight.bold,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
 
                                   const SizedBox(height: 8),
 
-                                  Text(
-                                    "\$${item.price}",
-                                  ),
+                                  Text("\$${item.price}"),
 
                                   Row(
                                     children: [
-
                                       IconButton(
                                         onPressed: () {
-                                          cartNotifier
-                                              .decreaseQuantity(
+                                          cartNotifier.decreaseQuantity(
                                             item.id,
                                           );
                                         },
 
-                                        icon: const Icon(
-                                          Icons.remove,
-                                        ),
+                                        icon: const Icon(Icons.remove),
                                       ),
 
-
-                                      Text(
-                                        "${item.quantity}",
-                                      ),
-
+                                      Text("${item.quantity}"),
 
                                       IconButton(
                                         onPressed: () {
-                                          cartNotifier
-                                              .increaseQuantity(
+                                          cartNotifier.increaseQuantity(
                                             item.id,
                                           );
                                         },
 
-                                        icon: const Icon(
-                                          Icons.add,
-                                        ),
+                                        icon: const Icon(Icons.add),
                                       ),
-
 
                                       IconButton(
                                         onPressed: () {
-                                          cartNotifier
-                                              .removeFromCart(
-                                            item.id,
-                                          );
+                                          cartNotifier.removeFromCart(item.id);
                                         },
 
-                                        icon: const Icon(
-                                          Icons.delete,
-                                        ),
+                                        icon: const Icon(Icons.delete),
                                       ),
-
                                     ],
                                   ),
                                 ],
@@ -156,36 +122,29 @@ class CartScreen extends ConsumerWidget {
                 ),
               ),
 
-
               Padding(
                 padding: const EdgeInsets.all(16),
 
                 child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-
                     const Text(
                       "Total:",
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight:
-                            FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-
 
                     Text(
                       "\$${cartNotifier.totalPrice.toStringAsFixed(2)}",
 
                       style: const TextStyle(
                         fontSize: 20,
-                        fontWeight:
-                            FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-
                   ],
                 ),
               ),
