@@ -51,12 +51,14 @@ class AuthStateNotifier extends AsyncNotifier<bool> {
   }
 
   Future<void> logout() async {
-    final storage = ref.read(localStorageProvider);
+  final storage = ref.read(localStorageProvider);
 
-    await storage.removeToken();
+  await storage.removeToken();
 
-    state = const AsyncData(false);
-  }
+  ref.invalidate(userProfileProvider);
+
+  state = const AsyncData(false);
+}
 }
 
 final authStateProvider =
