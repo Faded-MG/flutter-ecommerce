@@ -8,11 +8,7 @@ void main() {
   testWidgets('app boots to login screen smoke test', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MyApp(),
-      ),
-    );
+    await tester.pumpWidget(const ProviderScope(child: MyApp()));
     await tester.pump();
     await tester.pumpAndSettle();
 
